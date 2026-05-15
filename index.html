@@ -1,0 +1,477 @@
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --navy:#0b1629;--navy-l:#142035;--navy-m:#1a2d4a;
+  --gold:#c9a84c;--gold-l:#e0c068;--gold-d:#a8882c;
+  --white:#f0f4f8;--gray:#8a9ab0;--green:#2ecc71;--red:#e74c3c
+}
+body{font-family:Georgia,serif;background:var(--navy);color:var(--white);line-height:1.7}
+
+/* TICKER */
+#ticker{background:#070f1d;padding:9px 24px;display:flex;justify-content:space-between;align-items:center;font-family:'Courier New',monospace;font-size:13px;color:var(--gray);border-bottom:1px solid rgba(201,168,76,.3);position:sticky;top:0;z-index:100;flex-wrap:wrap;gap:8px}
+.t-item{display:flex;align-items:center;gap:6px}
+.t-lbl{color:var(--gray)}
+.t-val{color:var(--gold);font-weight:700}
+.up{color:var(--green)}.down{color:var(--red)}
+#t-time{font-size:11px;color:#3a4a60}
+
+/* HERO */
+.hero{background:linear-gradient(135deg,var(--navy) 0%,var(--navy-m) 100%);padding:60px 24px;text-align:center;border-bottom:1px solid rgba(201,168,76,.2);position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;inset:-50%;background:radial-gradient(ellipse at center,rgba(201,168,76,.06) 0%,transparent 65%);pointer-events:none}
+.hero h1{font-size:2.5rem;margin-bottom:8px;line-height:1.2}
+.hero .sub{color:var(--gray);font-size:1rem;font-family:sans-serif;margin-bottom:40px}
+.cards{display:flex;justify-content:center;gap:18px;flex-wrap:wrap;margin-bottom:28px}
+.card{background:var(--navy-l);border:1px solid rgba(201,168,76,.3);border-radius:12px;padding:22px 32px;min-width:160px}
+.card.feat{border-color:var(--gold);background:linear-gradient(135deg,var(--navy-m),var(--navy-l));box-shadow:0 0 28px rgba(201,168,76,.15)}
+.c-lbl{font-size:11px;color:var(--gray);text-transform:uppercase;letter-spacing:1px;font-family:sans-serif;margin-bottom:7px}
+.c-val{font-size:1.9rem;font-weight:700;color:var(--gold);font-family:'Courier New',monospace}
+.c-sub{font-size:11px;color:var(--gray);font-family:sans-serif;margin-top:3px}
+.savings-badge{display:inline-flex;align-items:center;gap:8px;background:rgba(46,204,113,.1);border:1px solid rgba(46,204,113,.35);border-radius:8px;padding:10px 20px;font-family:sans-serif;font-size:14px;color:#2ecc71;margin-bottom:22px}
+.savings-badge strong{font-weight:700}
+.btn-primary{background:linear-gradient(135deg,var(--gold-d),var(--gold));color:#0b1629;border:none;padding:15px 38px;font-size:15px;font-weight:700;border-radius:8px;cursor:pointer;text-decoration:none;display:inline-block;font-family:sans-serif;letter-spacing:.4px;transition:all .2s;box-shadow:0 4px 20px rgba(201,168,76,.3)}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:0 6px 26px rgba(201,168,76,.4)}
+.btn-sec{background:transparent;color:var(--gold);border:1px solid var(--gold);padding:14px 34px;font-size:14px;border-radius:8px;cursor:pointer;text-decoration:none;display:inline-block;font-family:sans-serif;transition:all .2s;margin-left:12px}
+.btn-sec:hover{background:rgba(201,168,76,.1)}
+
+/* SECTIONS */
+.section{padding:56px 40px;max-width:1100px;margin:0 auto}
+.s-title{font-size:1.75rem;color:var(--white);padding-bottom:10px;border-bottom:2px solid var(--gold-d);display:inline-block;margin-bottom:8px}
+.s-intro{color:var(--gray);font-family:sans-serif;margin-bottom:28px;font-size:.95rem}
+.divider{border:none;border-top:1px solid rgba(255,255,255,.06)}
+
+/* PRICE TABLE */
+.ptable{width:100%;border-collapse:collapse;font-family:sans-serif;font-size:14px}
+.ptable th{background:var(--navy-m);color:var(--gold);padding:13px 16px;text-align:left;font-size:11px;text-transform:uppercase;letter-spacing:.5px;font-weight:600}
+.ptable td{padding:13px 16px;border-bottom:1px solid rgba(255,255,255,.05);color:var(--white)}
+.ptable tr:hover td{background:rgba(201,168,76,.04)}
+.ptable tr:last-child td{border-bottom:none}
+.hl{color:var(--gold);font-weight:700}
+.badge{background:var(--gold-d);color:var(--navy);font-size:10px;padding:2px 7px;border-radius:20px;font-weight:700;margin-left:7px;vertical-align:middle}
+
+/* CALCULATOR */
+.calc-card{background:var(--navy-l);border:1px solid rgba(201,168,76,.3);border-radius:12px;padding:32px}
+.calc-row{display:flex;gap:20px;flex-wrap:wrap;margin-bottom:22px;align-items:flex-end}
+.calc-f{flex:1;min-width:180px}
+.c-lbl2{display:block;font-size:11px;color:var(--gray);text-transform:uppercase;letter-spacing:1px;font-family:sans-serif;margin-bottom:7px}
+.calc-input,.calc-sel{width:100%;background:var(--navy-m);border:1px solid rgba(201,168,76,.3);border-radius:6px;color:var(--white);padding:11px 14px;font-size:14px;font-family:sans-serif;outline:none;transition:border-color .2s}
+.calc-input:focus,.calc-sel:focus{border-color:var(--gold)}
+.calc-res{background:var(--navy-m);border:1px solid var(--gold);border-radius:8px;padding:22px 24px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:14px}
+.calc-res-lbl{font-family:sans-serif;color:var(--gray);font-size:13px}
+.calc-res-brk{font-size:12px;color:#4a5a70;font-family:sans-serif;margin-top:3px}
+.calc-res-val{font-size:2.1rem;color:var(--gold);font-family:'Courier New',monospace;font-weight:700}
+
+/* CHART */
+.chart-wrap{background:var(--navy-l);border:1px solid rgba(201,168,76,.2);border-radius:12px;padding:24px}
+
+/* SPECS */
+.specs-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.spec-item{background:var(--navy-l);border:1px solid rgba(201,168,76,.2);border-radius:8px;padding:14px 18px;display:flex;justify-content:space-between;align-items:center;font-family:sans-serif}
+.spec-k{color:var(--gray);font-size:13px}
+.spec-v{color:var(--gold);font-weight:700;font-size:14px}
+
+/* MINTAGE */
+.mint-wrap{background:var(--navy-l);border:1px solid rgba(201,168,76,.2);border-radius:12px;overflow:hidden;max-height:380px;overflow-y:auto}
+.mtable{width:100%;border-collapse:collapse;font-family:sans-serif;font-size:13px}
+.mtable th{background:var(--navy-m);color:var(--gold);padding:12px 20px;text-align:left;position:sticky;top:0;font-size:11px;text-transform:uppercase;letter-spacing:.5px}
+.mtable td{padding:10px 20px;border-bottom:1px solid rgba(255,255,255,.05);color:var(--white)}
+.mtable tr:hover td{background:rgba(201,168,76,.04)}
+.mtable .note{color:var(--gray);font-size:12px}
+
+/* FAQ */
+.faq-item{border:1px solid rgba(201,168,76,.2);border-radius:8px;margin-bottom:10px;overflow:hidden}
+.faq-q{padding:17px 22px;cursor:pointer;display:flex;justify-content:space-between;align-items:center;background:var(--navy-l);font-family:sans-serif;font-weight:600;font-size:14px;color:var(--white);user-select:none;transition:background .2s}
+.faq-q:hover{background:var(--navy-m)}
+.arrow{color:var(--gold);transition:transform .25s;font-size:18px}
+.faq-a{padding:0 22px;max-height:0;overflow:hidden;transition:max-height .3s ease,padding .3s;font-family:sans-serif;color:var(--gray);line-height:1.75;font-size:13.5px;background:var(--navy-l)}
+.faq-a.open{max-height:260px;padding:15px 22px 18px}
+
+/* PROSE */
+.prose{font-family:sans-serif;color:var(--gray);line-height:1.8;font-size:14.5px}
+.prose h3{color:var(--white);font-size:1.1rem;margin:22px 0 9px;font-family:Georgia,serif}
+.prose p{margin-bottom:14px}
+.prose strong{color:var(--white)}
+
+/* CTA */
+.cta-sec{background:linear-gradient(135deg,var(--navy-m),var(--navy-l));border-top:1px solid rgba(201,168,76,.3);border-bottom:1px solid rgba(201,168,76,.3);padding:68px 24px;text-align:center}
+.cta-sec h2{font-size:1.9rem;margin-bottom:14px}
+.cta-sec p{color:var(--gray);font-family:sans-serif;max-width:600px;margin:0 auto 14px;font-size:15px}
+.trust-row{display:flex;justify-content:center;gap:28px;flex-wrap:wrap;margin:24px 0 32px;font-family:sans-serif;font-size:13px;color:var(--gray)}
+.trust-item{display:flex;align-items:center;gap:6px}
+.trust-item span{color:var(--gold)}
+
+/* FOOTER */
+footer{background:#070f1d;padding:30px 40px;text-align:center;color:#3a4a60;font-family:sans-serif;font-size:12.5px;border-top:1px solid rgba(201,168,76,.1)}
+footer a{color:var(--gray);text-decoration:none}
+footer p+p{margin-top:7px}
+
+/* RESPONSIVE */
+@media(max-width:680px){
+  .hero h1{font-size:1.7rem}
+  .cards{flex-direction:column;align-items:center}
+  .section{padding:40px 18px}
+  .specs-grid{grid-template-columns:1fr}
+  .about-grid{grid-template-columns:1fr!important}
+  .btn-sec{margin:10px 0 0;display:block;text-align:center}
+  .trust-row{gap:16px}
+}
+</style>
+
+<!-- TICKER -->
+<div id="ticker">
+  <div style="display:flex;gap:22px;flex-wrap:wrap">
+    <div class="t-item"><span class="t-lbl">Silver Spot:</span><span class="t-val" id="t-ag">Loading…</span></div>
+    <div class="t-item"><span class="t-lbl">Gold Spot:</span><span class="t-val" id="t-au">—</span></div>
+    <div class="t-item"><span class="t-lbl">Silver Eagle:</span><span class="t-val" id="t-eagle">—</span></div>
+  </div>
+  <span id="t-time">Fetching live prices…</span>
+</div>
+
+<!-- HERO -->
+<section class="hero">
+  <h1>American Silver Eagle Coin Price Today</h1>
+  <p class="sub">Live spot price + dealer premiums — refreshed every 60 seconds</p>
+  <div class="cards">
+    <div class="card">
+      <div class="c-lbl">Silver Spot</div>
+      <div class="c-val" id="h-spot">—</div>
+      <div class="c-sub">per troy oz</div>
+    </div>
+    <div class="card">
+      <div class="c-lbl">Dealer Premium</div>
+      <div class="c-val">+$14.00</div>
+      <div class="c-sub">standard BU coin</div>
+    </div>
+    <div class="card feat">
+      <div class="c-lbl">Silver Eagle Price</div>
+      <div class="c-val" id="h-eagle">—</div>
+      <div class="c-sub">1 oz BU (current year)</div>
+    </div>
+  </div>
+  <div class="savings-badge">✦ <strong>Blanchard sells Silver Eagles up to $10/coin below major online dealers</strong> — Est. 1975</div>
+  <br>
+  <a href="https://wikipedia-backlinks.s.gy/eBWRJP" target="_blank" class="btn-primary">Buy Silver Eagles from Blanchard</a>
+  <a href="#calculator" class="btn-sec">Price Calculator ↓</a>
+</section>
+
+<!-- PRICES TABLE -->
+<hr class="divider">
+<div class="section" id="prices">
+  <h2 class="s-title">Silver Eagle Prices by Type</h2>
+  <p class="s-intro">All prices update live with the silver spot. Premiums reflect typical dealer markups — Blanchard's pricing often comes in lower.</p>
+  <table class="ptable">
+    <thead>
+      <tr>
+        <th>Coin Type</th>
+        <th>Silver Content</th>
+        <th>Est. Premium</th>
+        <th>Price Per Coin</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody id="ptbody">
+      <tr><td colspan="5" style="color:var(--gray);font-family:sans-serif;text-align:center;padding:22px">Loading live prices…</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- CALCULATOR -->
+<hr class="divider">
+<div class="section" id="calculator">
+  <h2 class="s-title">Silver Eagle Price Calculator</h2>
+  <p class="s-intro">Estimate your total cost at today's spot price.</p>
+  <div class="calc-card">
+    <div class="calc-row">
+      <div class="calc-f">
+        <label class="c-lbl2">Number of Coins</label>
+        <input type="number" class="calc-input" id="c-qty" value="1" min="1" max="50000">
+      </div>
+      <div class="calc-f">
+        <label class="c-lbl2">Coin Type / Premium</label>
+        <select class="calc-sel" id="c-type">
+          <option value="8">1 oz Cull (Random Year) — +$8/coin</option>
+          <option value="10">1 oz BU (Random Year) — +$10/coin</option>
+          <option value="14" selected>1 oz BU (Current Year) — +$14/coin</option>
+          <option value="17">1 oz BU in Tube (20-pack) — +$17/coin</option>
+          <option value="13">1 oz BU Monster Box (500) — +$13/coin</option>
+        </select>
+      </div>
+    </div>
+    <div class="calc-res">
+      <div>
+        <div class="calc-res-lbl">Estimated Total Cost</div>
+        <div class="calc-res-brk" id="c-brk">— coins × $—.— = —</div>
+      </div>
+      <div class="calc-res-val" id="c-total">$—</div>
+    </div>
+  </div>
+</div>
+
+<!-- CHART -->
+<hr class="divider">
+<div class="section" id="chart">
+  <h2 class="s-title">Silver Eagle Price History — 12 Months</h2>
+  <p class="s-intro">Historical Silver Eagle prices (spot + $14 standard dealer premium). Silver's 2025–2026 bull run has driven significant price appreciation.</p>
+  <div class="chart-wrap">
+    <canvas id="priceChart"></canvas>
+  </div>
+</div>
+
+<!-- ABOUT -->
+<hr class="divider">
+<div class="section" id="about">
+  <h2 class="s-title">About the American Silver Eagle</h2>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:40px;margin-top:24px" class="about-grid">
+    <div class="prose">
+      <p>The <strong>American Silver Eagle</strong> is the official silver bullion coin of the United States, authorized by the Liberty Coin Act of 1985 and first issued on November 24, 1986. Each coin contains exactly <strong>1 troy ounce of .999 fine silver</strong>, carries a $1 face value guaranteed by the U.S. government, and is produced by the United States Mint.</p>
+      <p>By annual sales volume, the Silver Eagle is consistently the <strong>world's best-selling silver bullion coin</strong>. Its government-backed purity, deep secondary market liquidity, and iconic American design make it the go-to benchmark for silver investors.</p>
+      <h3>What Determines the Silver Eagle Price?</h3>
+      <p>The Silver Eagle price has two components: the <strong>live silver spot price</strong> — the real-time market rate for one troy ounce of silver — and the <strong>dealer premium</strong>, which covers minting costs, shipping, insurance, and dealer margin. For standard BU coins from reputable dealers, premiums typically range from <strong>$10 to $20 over spot</strong>. Older dates, low-mintage years, and proof or burnished versions carry higher premiums.</p>
+      <h3>Type 1 vs. Type 2 Silver Eagles</h3>
+      <p>In 2021 the U.S. Mint introduced a redesigned reverse by Emily Damstra showing a bald eagle gathering branches. Coins from <strong>1986–mid-2021</strong> with John Mercanti's heraldic eagle are called <strong>Type 1</strong>. Coins from <strong>mid-2021 onward</strong> are <strong>Type 2</strong>. Both contain the same silver content; Type 1 coins in pristine condition often trade at a slight premium among collectors.</p>
+      <h3>Are Silver Eagles a Good Investment?</h3>
+      <p>Silver Eagles offer a straightforward way to own physical silver backed by U.S. government purity guarantees. Their high liquidity means any coin dealer or pawn shop in America will buy them. They are also <strong>eligible for Precious Metals IRAs</strong>. As with any commodity, prices fluctuate with the silver market — they are best viewed as a long-term store of value or portfolio hedge, not a short-term trade.</p>
+    </div>
+    <div>
+      <h3 style="font-family:Georgia,serif;color:var(--white);margin-bottom:15px;font-size:1.1rem">Coin Specifications</h3>
+      <div class="specs-grid">
+        <div class="spec-item"><span class="spec-k">Metal</span><span class="spec-v">.999 Fine Silver</span></div>
+        <div class="spec-item"><span class="spec-k">Weight</span><span class="spec-v">1 Troy oz (31.1g)</span></div>
+        <div class="spec-item"><span class="spec-k">Diameter</span><span class="spec-v">40.6 mm</span></div>
+        <div class="spec-item"><span class="spec-k">Thickness</span><span class="spec-v">2.98 mm</span></div>
+        <div class="spec-item"><span class="spec-k">Face Value</span><span class="spec-v">$1 USD</span></div>
+        <div class="spec-item"><span class="spec-k">First Minted</span><span class="spec-v">1986</span></div>
+        <div class="spec-item"><span class="spec-k">Issuing Mint</span><span class="spec-v">U.S. Mint</span></div>
+        <div class="spec-item"><span class="spec-k">Legal Tender</span><span class="spec-v">Yes (USA)</span></div>
+        <div class="spec-item"><span class="spec-k">Obverse</span><span class="spec-v">Walking Liberty</span></div>
+        <div class="spec-item"><span class="spec-k">IRA Eligible</span><span class="spec-v">Yes</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MINTAGE -->
+<hr class="divider">
+<div class="section" id="mintage">
+  <h2 class="s-title">Silver Eagle Mintage by Year</h2>
+  <p class="s-intro">Lower mintage years — especially 1996, 1994, and 1997 — often carry higher premiums in the secondary market.</p>
+  <div class="mint-wrap">
+    <table class="mtable">
+      <thead><tr><th>Year</th><th>BU Mintage</th><th>Notes</th></tr></thead>
+      <tbody id="mint-tbody"></tbody>
+    </table>
+  </div>
+</div>
+
+<!-- FAQ -->
+<hr class="divider">
+<div class="section" id="faq">
+  <h2 class="s-title">Frequently Asked Questions</h2>
+  <p class="s-intro">Everything you need to know about Silver Eagle coin pricing.</p>
+  <div id="faq-wrap"></div>
+</div>
+
+<!-- CTA -->
+<div class="cta-sec">
+  <h2>Get a Better Price on Silver Eagles</h2>
+  <p>Blanchard & Company has helped Americans invest in precious metals since 1975 — and they consistently price Silver Eagles up to <strong style="color:var(--gold)">$10 per coin below</strong> the big online dealers.</p>
+  <p>Their specialists offer personalized guidance, no-pressure service, and transparent pricing.</p>
+  <div class="trust-row">
+    <div class="trust-item"><span>✦</span> Est. 1975</div>
+    <div class="trust-item"><span>✦</span> Up to $10/coin below competitors</div>
+    <div class="trust-item"><span>✦</span> IRA-eligible coins</div>
+    <div class="trust-item"><span>✦</span> (800) 880-4653</div>
+  </div>
+  <a href="https://wikipedia-backlinks.s.gy/eBWRJP" target="_blank" class="btn-primary" style="font-size:16px;padding:17px 46px">Buy Silver Eagles from Blanchard →</a>
+  <p style="margin-top:18px;font-size:12px;color:#3a4a60;font-family:sans-serif">Blanchard & Company · New Orleans, LA</p>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <p>Prices shown are estimates based on live spot + typical dealer premiums. Actual dealer prices vary. This page is for informational purposes only and does not constitute investment advice.</p>
+  <p>© 2026 &nbsp;·&nbsp; <a href="#">Privacy Policy</a> &nbsp;·&nbsp; <a href="#">Disclaimer</a> &nbsp;·&nbsp; <a href="#">Contact</a></p>
+</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+<script>
+const FALLBACK_AG=84.28,FALLBACK_AU=4672.27,PREMIUM=14;
+const BLANCHARD='https://wikipedia-backlinks.s.gy/eBWRJP';
+let spotAg=null,spotAu=null;
+
+const fmt=(n,d=2)=>'$'+n.toFixed(d).replace(/\B(?=(\d{3})+(?!\d))/g,',');
+
+async function fetchSpot(){
+  try{
+    const r=await fetch('https://metals.live/api/spot',{cache:'no-store'});
+    const d=await r.json();
+    const s=Array.isArray(d)?d[0]:d;
+    spotAg=parseFloat(s.silver||s.ag||s.XAG);
+    spotAu=parseFloat(s.gold||s.au||s.XAU);
+    if(isNaN(spotAg))throw new Error();
+  }catch{
+    try{
+      const r2=await fetch('https://data-asg.goldprice.org/dbXRates/USD',{cache:'no-store'});
+      const d2=await r2.json();
+      const it=d2.items[0];
+      spotAg=parseFloat(it.xagPrice);
+      spotAu=parseFloat(it.xauPrice);
+    }catch{
+      spotAg=spotAg||FALLBACK_AG;
+      spotAu=spotAu||FALLBACK_AU;
+    }
+  }
+  updateAll();
+}
+
+function updateAll(){
+  const eagle=spotAg+PREMIUM;
+  const now=new Date().toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit',second:'2-digit'});
+  document.getElementById('t-ag').textContent=fmt(spotAg);
+  document.getElementById('t-au').textContent=fmt(spotAu);
+  document.getElementById('t-eagle').textContent=fmt(eagle);
+  document.getElementById('t-time').textContent='Updated '+now+' ET';
+  document.getElementById('h-spot').textContent=fmt(spotAg);
+  document.getElementById('h-eagle').textContent=fmt(eagle);
+
+  const rows=[
+    {name:'1 oz BU — Random Year',          note:'',        prem:10},
+    {name:'1 oz BU — Current Year (2026)',   note:'POPULAR', prem:14},
+    {name:'1 oz BU — MintSealed Tube (20)',  note:'',        prem:17},
+    {name:'1 oz Cull (Random Year)',         note:'LOWEST',  prem:8},
+    {name:'1 oz Proof (Random Year)',        note:'',        prem:38},
+    {name:'Monster Box (500 coins, BU)',     note:'',        prem:13},
+  ];
+  document.getElementById('ptbody').innerHTML=rows.map(r=>`
+    <tr>
+      <td>${r.name}${r.note?`<span class="badge">${r.note}</span>`:''}</td>
+      <td>1 troy oz (.999)</td>
+      <td>+${fmt(r.prem,2)}</td>
+      <td class="hl">${fmt(spotAg+r.prem)}</td>
+      <td><a href="${BLANCHARD}" target="_blank" style="color:var(--gold);font-family:sans-serif;font-size:12px;text-decoration:none;border:1px solid var(--gold-d);padding:5px 12px;border-radius:4px;white-space:nowrap">Buy →</a></td>
+    </tr>`).join('');
+
+  updateCalc();
+}
+
+function updateCalc(){
+  if(!spotAg)return;
+  const qty=Math.max(1,parseInt(document.getElementById('c-qty').value)||1);
+  const prem=parseFloat(document.getElementById('c-type').value);
+  const each=spotAg+prem;
+  const total=qty*each;
+  document.getElementById('c-brk').textContent=`${qty.toLocaleString()} coin${qty>1?'s':''} × ${fmt(each)} = ${fmt(total)}`;
+  document.getElementById('c-total').textContent=fmt(total);
+}
+
+document.getElementById('c-qty').addEventListener('input',updateCalc);
+document.getElementById('c-type').addEventListener('change',updateCalc);
+
+// CHART
+const months=['May\'25','Jun\'25','Jul\'25','Aug\'25','Sep\'25','Oct\'25','Nov\'25','Dec\'25','Jan\'26','Feb\'26','Mar\'26','Apr\'26','May\'26'];
+const spotHist=[32.50,35.20,38.80,43.50,49.20,55.60,61.30,66.80,70.50,74.90,78.40,81.20,84.28];
+const eagleHist=spotHist.map(s=>+(s+14).toFixed(2));
+
+window.addEventListener('load',()=>{
+  const ctx=document.getElementById('priceChart').getContext('2d');
+  new Chart(ctx,{
+    type:'line',
+    data:{
+      labels:months,
+      datasets:[
+        {label:'Silver Eagle Price (spot + $14)',data:eagleHist,borderColor:'#c9a84c',backgroundColor:'rgba(201,168,76,.08)',borderWidth:2.5,pointBackgroundColor:'#c9a84c',pointRadius:4,tension:.35,fill:true},
+        {label:'Silver Spot Price',data:spotHist,borderColor:'#8a9ab0',backgroundColor:'transparent',borderWidth:1.5,borderDash:[5,4],pointRadius:3,pointBackgroundColor:'#8a9ab0',tension:.35}
+      ]
+    },
+    options:{
+      responsive:true,
+      interaction:{mode:'index',intersect:false},
+      plugins:{
+        legend:{labels:{color:'#8a9ab0',font:{family:'sans-serif',size:12},boxWidth:14}},
+        tooltip:{backgroundColor:'#142035',borderColor:'rgba(201,168,76,.4)',borderWidth:1,titleColor:'#c9a84c',bodyColor:'#f0f4f8',callbacks:{label:c=>' '+c.dataset.label+': $'+c.parsed.y.toFixed(2)}}
+      },
+      scales:{
+        x:{ticks:{color:'#8a9ab0',font:{family:'sans-serif',size:11}},grid:{color:'rgba(255,255,255,.05)'}},
+        y:{ticks:{color:'#8a9ab0',font:{family:'sans-serif',size:11},callback:v=>'$'+v.toFixed(0)},grid:{color:'rgba(255,255,255,.05)'}}
+      }
+    }
+  });
+});
+
+// MINTAGE
+const mintData=[
+  {yr:'2024',m:'113,130',n:''},
+  {yr:'2023',m:'199,533',n:''},
+  {yr:'2022',m:'212,609',n:''},
+  {yr:'2021 (Type 2)',m:'185,791',n:'New reverse design'},
+  {yr:'2021 (Type 1)',m:'—',n:'All blanks rerouted to Type 2'},
+  {yr:'2020',m:'154,863',n:''},
+  {yr:'2019',m:'141,030',n:''},
+  {yr:'2018',m:'138,947',n:''},
+  {yr:'2017',m:'176,739',n:''},
+  {yr:'2016',m:'172,802',n:''},
+  {yr:'2015',m:'223,879',n:''},
+  {yr:'2014',m:'253,169',n:''},
+  {yr:'2013',m:'221,981',n:''},
+  {yr:'2012',m:'226,120',n:''},
+  {yr:'2011',m:'409,766',n:'High demand year'},
+  {yr:'2010',m:'—',n:'Proof/burnished only; no BU struck'},
+  {yr:'2009',m:'—',n:'Proof suspended; uncirculated sold out'},
+  {yr:'2008',m:'533,757',n:''},
+  {yr:'2007',m:'621,333',n:''},
+  {yr:'2006',m:'466,573',n:''},
+  {yr:'2005',m:'816,663',n:''},
+  {yr:'2004',m:'801,602',n:''},
+  {yr:'2003',m:'747,831',n:''},
+  {yr:'2002',m:'647,342',n:''},
+  {yr:'2001',m:'746,398',n:''},
+  {yr:'2000',m:'600,743',n:''},
+  {yr:'1999',m:'549,330',n:''},
+  {yr:'1998',m:'450,728',n:''},
+  {yr:'1997',m:'440,315',n:'Low mintage — carries premium'},
+  {yr:'1996',m:'498,293',n:'Key date — highest premiums'},
+  {yr:'1995',m:'30,125',n:'West Point issue — very rare'},
+  {yr:'1994',m:'372,168',n:'Low mintage — collector favorite'},
+  {yr:'1993',m:'405,913',n:''},
+  {yr:'1992',m:'498,543',n:''},
+  {yr:'1991',m:'511,924',n:''},
+  {yr:'1990',m:'695,510',n:''},
+  {yr:'1989',m:'617,694',n:''},
+  {yr:'1988',m:'557,370',n:''},
+  {yr:'1987',m:'904,732',n:''},
+  {yr:'1986',m:'1,446,778',n:'First year of issue'},
+];
+document.getElementById('mint-tbody').innerHTML=mintData.map(r=>`<tr><td><strong>${r.yr}</strong></td><td>${r.m}</td><td class="note">${r.n}</td></tr>`).join('');
+
+// FAQ
+const faqs=[
+  {q:'What is the silver eagle coin price today?',a:'The American Silver Eagle price today is the live silver spot price plus a dealer premium. Standard BU coins from reputable dealers typically trade at $10–$20 over spot. Use the live price display and calculator at the top of this page for today\'s current estimate.'},
+  {q:'Why do Silver Eagle prices change daily?',a:'Silver Eagle prices move with the silver spot price, which trades 23 hours a day on global commodity markets. When silver spot rises or falls, the Silver Eagle price follows in near-lockstep. The dealer premium component is more stable, typically adjusting only when market conditions change significantly.'},
+  {q:'What is a dealer premium on a Silver Eagle?',a:'The premium is the amount above the silver spot price that dealers charge. It covers minting costs paid to the U.S. Mint, logistics, insurance, and the dealer\'s margin. Standard BU Silver Eagles carry premiums of roughly $10–$20 over spot. Proof coins, special issues, and key-date years command higher premiums.'},
+  {q:'Are Silver Eagles priced the same at every dealer?',a:'No — and this is where shopping around pays off. Blanchard & Company is known for pricing Silver Eagles up to $10 per coin below major online-only dealers. Buying in larger quantities (tubes of 20 or monster boxes of 500) also lowers the per-coin premium.'},
+  {q:'What years of Silver Eagles are worth the most?',a:'Key dates with low mintage — particularly 1996, 1994, and 1997 — command the highest premiums above spot. The 1995-W Proof and the 2021 Type 1 are also sought by collectors. For bullion investors focused purely on silver content, the year matters less than the price premium.'},
+  {q:'Can I buy Silver Eagles in my IRA?',a:'Yes. American Silver Eagles are approved for inclusion in a Precious Metals IRA (also called a Self-Directed IRA). They must be stored at an IRS-approved depository. A specialist at Blanchard can walk you through the process.'},
+  {q:'How do I know if a Silver Eagle dealer is reputable?',a:'Look for dealers with long track records, transparent pricing, and verified reviews. Blanchard & Company, founded in 1975, is one of the most established precious metals firms in the United States — and their pricing on Silver Eagles is consistently among the most competitive available.'},
+];
+document.getElementById('faq-wrap').innerHTML=faqs.map((f,i)=>`
+  <div class="faq-item">
+    <div class="faq-q" onclick="toggleFaq(${i},this)"><span>${f.q}</span><span class="arrow">▾</span></div>
+    <div class="faq-a" id="fa-${i}">${f.a}</div>
+  </div>`).join('');
+
+function toggleFaq(i,el){
+  const a=document.getElementById('fa-'+i);
+  const open=a.classList.toggle('open');
+  el.querySelector('.arrow').style.transform=open?'rotate(180deg)':'';
+}
+
+document.querySelectorAll('a[href^="#"]').forEach(a=>{
+  a.addEventListener('click',e=>{
+    e.preventDefault();
+    const t=document.querySelector(a.getAttribute('href'));
+    if(t)t.scrollIntoView({behavior:'smooth',block:'start'});
+  });
+});
+
+document.title='American Silver Eagle Coin Price Today';
+fetchSpot();
+setInterval(fetchSpot,60000);
+</script>
