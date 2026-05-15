@@ -306,29 +306,21 @@ footer p+p{margin-top:7px}
 <script>
 const FALLBACK_AG=84.28,FALLBACK_AU=4672.27,PREMIUM=14;
 const BLANCHARD='https://wikipedia-backlinks.s.gy/eBWRJP';
+const METALS_ENDPOINT='https://silver-eagle-metals.johnedavis67.workers.dev/metals';
 let spotAg=null,spotAu=null;
 
 const fmt=(n,d=2)=>'$'+n.toFixed(d).replace(/\B(?=(\d{3})+(?!\d))/g,',');
 
 async function fetchSpot(){
   try{
-    const r=await fetch('https://metals.live/api/spot',{cache:'no-store'});
+    const r=await fetch(METALS_ENDPOINT,{cache:'no-store'});
     const d=await r.json();
-    const s=Array.isArray(d)?d[0]:d;
-    spotAg=parseFloat(s.silver||s.ag||s.XAG);
-    spotAu=parseFloat(s.gold||s.au||s.XAU);
+    spotAg=parseFloat(d.silver);
+    spotAu=parseFloat(d.gold);
     if(isNaN(spotAg))throw new Error();
   }catch{
-    try{
-      const r2=await fetch('https://data-asg.goldprice.org/dbXRates/USD',{cache:'no-store'});
-      const d2=await r2.json();
-      const it=d2.items[0];
-      spotAg=parseFloat(it.xagPrice);
-      spotAu=parseFloat(it.xauPrice);
-    }catch{
-      spotAg=spotAg||FALLBACK_AG;
-      spotAu=spotAu||FALLBACK_AU;
-    }
+    spotAg=spotAg||FALLBACK_AG;
+    spotAu=spotAu||FALLBACK_AU;
   }
   updateAll();
 }
